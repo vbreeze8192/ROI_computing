@@ -92,7 +92,7 @@ Tutti i risultati rappresentano ordini di grandezza per investimenti e risparmi 
 			st.write('Foglio: :orange[{}]'.format(item))
 			st.write(template_structure[item])
 		nome_modello= os.path.join(os.getcwd(), os.path.normpath('File_Import_Python.xlsx'))
-		xl=pd.ExcelFile('path_to_file.xls')
+		xl=pd.ExcelFile(nome_modello)
 		buffer = io.BytesIO()
 		with pd.ExcelWriter(buffer, engine='xlsxwriter') as writer:
 			for sheet in xl.sheet_names:
