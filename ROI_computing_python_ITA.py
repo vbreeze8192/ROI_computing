@@ -94,10 +94,9 @@ Tutti i risultati rappresentano ordini di grandezza per investimenti e risparmi 
 		nome_modello= os.path.join(os.getcwd(), os.path.normpath('File_Import_Python.xlsx'))
 		file_example=pd.read_excel(nome_modello)
 		buffer = io.BytesIO()
-		st.write(file_example)
 		with pd.ExcelWriter(buffer, engine='xlsxwriter') as writer:
 			# Write each dataframe to a different worksheet.
-			file_example.to_excel(writer, sheet_name='Sheet1', index=False)
+			file_example.to_excel(writer, index=False)
 			# Close the Pandas Excel writer and output the Excel file to the buffer
 			writer.save()
 		st.download_button(
