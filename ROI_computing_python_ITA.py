@@ -54,38 +54,38 @@ Tutti i risultati rappresentano ordini di grandezza per investimenti e risparmi 
 
 	template_structure={}
 	#template_structure={}
-	template_structure['GENERICO']={'INDEX':'List of scenarios to be explored. Those names need to be equal to the Sheets names',\
-				'scenario_description':'Description for each scenario',\
-				'ce':'Electricity cost, must be aligned with energy consumption measurement unit (€/kWh, €/MWh...)',\
-				'cg':'Gas cost, must be aligned with gas consumption measurement unit',\
-				'cve':'Cost for other energy vectors consumed',\
-				'bck_ee':'Backoffice hours related to energy management',\
-				'bck_man':'Backoffice hours related to maintenance management',\
-				'bck_opt':'Backoffice hours related to process analysis and optimization',\
-				'tot_yr':'Years of the economic analysis, useful for ROI evaluation',\
-				'sw':'Provision of proprietary software for AI creation and modelops',\
-				'cost_FTE':'Average hourly cost for backoffice activities'}
-	template_structure['scenario_name_from_INDEX']={'asset_name':'Name of the asset analysed',\
-				'C_Plan':'Cost for each planned maintenance activity on the asset - average',\
-				'O_Plan':'Planned maintenance occurrency in one year(1=once a year; 0.1= once every 10 years)',\
-				'C_1':'Average cost for minor faults',\
-				'O_1':'Yearly occurrency of minor faults',\
-				'C_2':'Cost for main faults',\
-				'O_2':'Yearly occurrency of main faults',\
-				'C_3':'Cost for major faults',\
-				'O_3':'Yearly occurrency of major faults',\
-				'C_Pred':'Cost for predictive maintenance activity (vibration analysis, others)',\
-				'O_Pred':'Predictive maintenance occurrency in one year',\
-				'E':'Yearly electricity consumption of the asset',\
-				'G':'Yearly gas consumption of the asset',\
-				'VE':'Yearly consumption of other energy vectors',\
-				'Eprod':'Electricity autoproduction',\
-				'Thprod':'Other energy vector autoproduction',\
-				'enmod':'Energy and efficiency model to be implemented (1=Yes, 0=No)',\
-				'maintmod':'Predictive maintenance model to be implemented (1=Yes, 0=No)',\
-				'optmod':'Process optimization (1=Yes,0=No)',\
-				'perc_data':'Percentage of available data from the process (1=the process is fully represented, 0=all data are missing)',\
-				'av_failure':'Enough fault data or machine log are avilable (1=Yes, 0=No)'}
+	template_structure['GENERICO']={'INDEX':'Lista degli scenari da esplorare. Questi nomi devono essere uguali ai nomi di Fogli',\
+	'scenario_description':'Descrizione per ogni scenario',\
+	'ce':"Costo dell'energia elettrica, deve essere allineato con l'unità di misura del consumo energetico (€/kWh, €/MWh...)",\
+	'cg':"Costo del gas, deve essere allineato con l'unità di misura del consumo di gas",\
+	'cve':"Costo per altri vettori energetici consumati",\
+	'bck_ee':"Orari di backoffice relativi alla gestione dell'energia",\
+	'bck_man':"Orari di backoffice relativi alla gestione della manutenzione",\
+	'bck_opt':"Orari di backoffice relativi all'analisi e all'ottimizzazione dei processi",\
+	'tot_yr':"Anni dell'analisi economica, utili per la valutazione del ROI",\
+	'sw':"Fornitura di software proprietario per la creazione di AI e modelops",\
+	'cost_FTE':"Costo orario medio per attività di backoffice"}
+	template_structure['scenario_name_from_INDEX']={'asset_name':"Nome dell'asset analizzato",\
+	'C_Plan':"Costo per ogni attività di manutenzione pianificata sull'asset - medio",\
+	'O_Plan':"Occorrenza della manutenzione pianificata in un anno(1=una volta all'anno; 0.1= una volta ogni 10 anni)",\
+	'C_1':"Costo medio per guasti minori",\
+	'O_1':"Presenza annuale di guasti minori",\
+	'C_2':"Costo per guasti principali",\
+	'O_2':"Presenza annuale dei guasti principali",\
+	'C_3':"Costo per guasti gravi'",\
+	'O_3':"Presenza annuale di guasti gravi",\
+	'C_Pred':"Costo per attività di manutenzione predittiva (analisi delle vibrazioni, altro)",\
+	'O_Pred':"Occorrenza della manutenzione predittiva in un anno",\
+	'E':"Consumo elettrico annuo dell'asset",\
+	'G':"Consumo annuo di gas dell'asset",\
+	'VE':"Consumo annuo di altri vettori energetici",\
+	'Eprod':"Autoproduzione di energia elettrica",\
+	'Thprod':"Altra autoproduzione di vettori energetici",\
+	'enmod':"Modello energetico ed efficiente da implementare (1=Sì, 0=No)",\
+	'maintmod':"Modello di manutenzione predittiva da implementare (1=Sì, 0=No)",\
+	'optmod':"Ottimizzazione del processo (1=Sì,0=No)",\
+	'perc_data':"Percentuale di dati disponibili dal processo (1=il processo è completamente rappresentato, 0=mancano tutti i dati)",\
+	'av_failure':"Sono disponibili sufficienti dati di errore o registro macchina (1=Sì, 0=No)"}
 	if st.checkbox(':paperclip: :red[Mostra le descrizioni per i campi del template:]'):
 		for item in template_structure:
 			st.write('Foglio: :orange[{}]'.format(item))
