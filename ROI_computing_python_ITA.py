@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
+import plotly.express as px
 import datetime
 import math
 import streamlit as st
@@ -8,13 +9,14 @@ import io
 
 from utilities import licence, ams, setup, backoffice, occurency_maintenance, maint_savings, energy_savings, opt_savings, mipu_colors, download_excel, ROIcompute, check_password
 
-##TODO: integra pwd https://docs.streamlit.io/knowledge-base/deploy/authentication-without-sso
-
-import streamlit as st
 
 
+		
+
+
+st.set_page_config(page_title="ROI of AI projects", page_icon="🤖")
 if check_password():
-
+	
 	st.title('ROI of an AI project')
 	st.write('''
 	AI trained on process and maintenance data can be a game changer for both the production and the O&M.
@@ -94,44 +96,7 @@ if check_password():
 		st.subheader('Results for each scenario')
 		[scenarios,CF,synth,minn,tots]=ROIcompute(uploaded_file) 
 		cii=0
-		#st.line_chart(CF)
+		fig=px.line(CF, x=CF.index, y=CF.columns, title='Cash Flow per year [€]')
+		st.plotly_chart(fig)
 
-		
-		fig,ax=plt.subplots()
-		for scenario in scenarios:
-			txt='{} | PBT: {}, ROI: {}'.format(scenario,\
-								round(synth['PBT'].loc[scenario],1),\
-								round(synth['ROI'].loc[scenario],1))
-			ax.plot(CF[scenario], 'o-', linewidth=2,color=mipu_colors(cii),label=txt)
-			ax.plot(synth['PBT'].loc[scenario],0, marker='*', markersize=20,color='gold')
-			cii=cii+1
-			#customization
-			#plt.xticks([2017, 2018, 2019, 2020, 2021])
-			#plt.text(int(PBT),cash_flow[int(round(PBT,1))+1], 'Payback time: {} years\nROI: {}'.format(round(PBT,1),round(ROI,1)))#, fontdict=None)
-
-		ax.text(tots/2-0.5, minn,'Copyright MIPU', fontsize=10,color='gray',style='italic')
-
-		ax.hlines(0, 0, tots)
-		plt.xlabel('Years')
-		plt.ylabel('Cash flow [k€]')
-		plt.title('Scenarios of investment for AI projects')
-
-		ax.legend(loc='upper center', bbox_to_anchor=(0.5, -0.10),
-			fancybox=True, shadow=True, ncol=1)
-		plt.xlim([0, tots])
-		st.pyplot(fig)
-		
-		
-
-		fn = 'ROI_results.png'
-		plt.savefig(fn, bbox_inches='tight')
-		with open(fn, "rb") as img:
-			btn = st.download_button(
-				label="Download image",
-				data=img,
-				file_name=fn,
-				mime="image/png"
-			)
-		
-    ##TODO: capire come / dove salva e perche i risultati vengono diversi
 
