@@ -11,7 +11,6 @@ import os
 
 def check_password():
     """Returns `True` if the user had the correct password."""
-    st.write(os.getcwd())
     def password_entered():
         """Checks whether a password entered by the user is correct."""
         
@@ -32,7 +31,7 @@ def check_password():
         st.text_input(
             "Password", type="password", on_change=password_entered, key="password"
         )
-        st.error("?? Password incorrect")
+        st.error("Password incorrect")
         return False
     else:
         # Password correct.
