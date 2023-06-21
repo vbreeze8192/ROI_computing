@@ -90,7 +90,7 @@ Tutti i risultati rappresentano ordini di grandezza per investimenti e risparmi 
 		for item in template_structure:
 			st.write('Foglio: :orange[{}]'.format(item))
 			st.write(template_structure[item])
-	st.write(""" Se hai tutti gli scnari pronti, carica il template compilato qui. """)
+	st.write(""" Se hai tutti gli scenari pronti, carica il template compilato qui. """)
 	uploaded_file = st.file_uploader("Carica excel", type=".xlsx")
 
 	if st.button(':moneybag: Ready, compute ROI! :moneybag:',disabled=not uploaded_file, type='primary'):

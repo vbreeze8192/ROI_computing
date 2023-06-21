@@ -220,7 +220,7 @@ def ROIcompute(name_file):
         main_mod=0
         tot_opt=0
         descr=gen['scenario_description'].loc[scenario]
-        st.subheader('Valutiamo lo scenario:orange[{}]'.format(scenario))
+        st.subheader('Valutiamo lo scenario :orange[{}]'.format(scenario))
         st.write('Parametri di scenario:')
         st.write(gen.loc[scenario])
         
@@ -309,7 +309,7 @@ def ROIcompute(name_file):
         stp=setup (en_mod, main_mod,tot_opt, sw)/1000
         cf_t=(TOTYR_savings-lic)/1000 #saving per year without scaling
 
-        st.write('Risparmio totale atteso:green[{} k€/yr]'.format(round(TOTYR_savings/1000,1)))
+        st.write('Risparmio totale atteso: :green[{} k€/yr]'.format(round(TOTYR_savings/1000,1)))
 
         cash_flow=[-stp]
         if cash_flow[0]<minn:
@@ -326,11 +326,11 @@ def ROIcompute(name_file):
  
         txt='{} | PBT: {}, ROI: {}'.format(descr,round(PBT,1),round(ROI,1))
 
-        st.write('Costo di setup :orange[{} k€]'.format(round(stp,1)))
-        st.write('Costo di licenza :orange[{} k€/yr]'.format(round(licence (en_mod, main_mod,tot_opt, sw)/1000,1)))
-        st.write('Costo del mantenimento della soluzione :orange[{} k€/yr]'.format(round(ams(en_mod, main_mod,tot_opt, sw)/1000,1)))
-        st.write('Flusso di cassa netto annuo :green[{} k€/yr]'.format(round(cf_t,1)))
-        st.write('Indici economici principali per lo scenario analizzato :green[{}, {}]'.format(scenario,txt) )
+        st.write('Costo di setup: :orange[{} k€]'.format(round(stp,1)))
+        st.write('Costo di licenza: :orange[{} k€/yr]'.format(round(licence (en_mod, main_mod,tot_opt, sw)/1000,1)))
+        st.write('Costo del mantenimento della soluzione: :orange[{} k€/yr]'.format(round(ams(en_mod, main_mod,tot_opt, sw)/1000,1)))
+        st.write('Flusso di cassa netto annuo: :green[{} k€/yr]'.format(round(cf_t,1)))
+        st.write('Indici economici principali per lo scenario analizzato: :green[{}, {}]'.format(scenario,txt) )
         st.write('Analisi complete per lo scenario {} - {}\n_____\n\n'.format(scenario,descr))
 
         synth.loc[scenario]=[round(stp,1),round(licence (en_mod, main_mod,tot_opt, sw)/1000,1),\
