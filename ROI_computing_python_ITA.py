@@ -14,22 +14,23 @@ from utilities import licence, ams, setup, backoffice, occurency_maintenance, ma
 		
 
 
-st.set_page_config(page_title="ROI of AI projects", page_icon="🤖")
+st.set_page_config(page_title="AI project ROI", page_icon="🤖")
 if check_password():
 	
-	st.title('ROI of an AI project')
+	st.title('AI, ne vale la pena?')
+	st.subheader('Calcolo del ritorno di investimento di un progetto di AI industriale.')
 	st.write('''
-	AI trained on process and maintenance data can be a game changer for both the production and the O&M.
-	According to Deloitte, AI can :green[decrease production cost by 20%] and :green[increase process efficiency by up to 15%] , \
-		thanks to optimization, process automation and a better quality control.
-	McKinsey states that AI driven predictive maintenance can :green[decrease machine downtimes by 50%] and :green[maintenance costs by up to 40%.]\
-	The World Economic Forum says that AI applied to energy management can :green[decrease energy consumption by 10 to 20%] \
-		an contribute to :green[lowering CO2 emissions.]''')
-	st.write('''In MIPU experience, those savings must be leveraged on :orange[data availability, AS-IS situation and AI solution design].
-		This app collects those informations and provides a :green[preliminary assessment of costs and savings.]
-		All results represent orders of magnitude for investment and savings, and need to be confirmed by an expert in industrial AI.''')
-	st.markdown('''To start with the evaluation, :orange[upload your file] or :orange[download the template] clicking on the button below.''') 
-	st.write('''Scenario sheets must be named accordingly to the index in the general sheet. Add as many scenario as you need. 
+	L'intelligenza artificiale addestrata sui dati di processo e manutenzione può essere un punto di svolta sia per la produzione che per l'O&M.
+Secondo Deloitte, l'intelligenza artificiale può :green[ridurre i costi di produzione del 20%] e :green[aumentare l'efficienza del processo fino al 15%] , \
+grazie all'ottimizzazione, all'automazione dei processi e ad un migliore controllo della qualità.
+McKinsey afferma che la manutenzione predittiva guidata dall'intelligenza artificiale può :green[ridurre i tempi di fermo macchina del 50%] e :green[costi di manutenzione fino al 40%.]\
+Il World Economic Forum afferma che l'IA applicata alla gestione dell'energia può :verde[ridurre il consumo di energia dal 10 al 20%] \
+e contribuire alla :green[riduzione delle emissioni di CO2.]''')
+	st.write('''Nell'esperienza MIPU, questi risparmi devono essere valutati in base a :orange[disponibilità dei dati, situazione AS-IS e progettazione della soluzione AI].
+Questa app raccoglie queste informazioni e fornisce una :verde[valutazione preliminare di costi e risparmi.]
+Tutti i risultati rappresentano ordini di grandezza per investimenti e risparmi e devono essere confermati da un esperto di intelligenza artificiale industriale.''')
+	st.markdown('''Per iniziare con la valutazione, :orange[carica il tuo file] o :orange[scarica il modello] cliccando sul pulsante sottostante.''') 
+	st.write('''Le schede degli scenari devono essere denominate in base all'indice della scheda generale. Aggiungi tutti gli scenari di cui hai bisogno.
 	''')
 
 	sc_col=['asset_name','C_Plan','O_Plan','C_1','O_1','C_2','O_2','C_3','O_3',\
@@ -85,18 +86,18 @@ if check_password():
 				'optmod':'Process optimization (1=Yes,0=No)',\
 				'perc_data':'Percentage of available data from the process (1=the process is fully represented, 0=all data are missing)',\
 				'av_failure':'Enough fault data or machine log are avilable (1=Yes, 0=No)'}
-	if st.checkbox(':paperclip: :red[Show template structure and descriptions:]'):
+	if st.checkbox(':paperclip: :red[Mostra le descrizioni per i campi del template:]'):
 		for item in template_structure:
-			st.write('Sheet: :orange[{}]'.format(item))
+			st.write('Foglio: :orange[{}]'.format(item))
 			st.write(template_structure[item])
-	st.write(""" If you have the template ready, upload it here. """)
-	uploaded_file = st.file_uploader("Upload excel", type=".xlsx")
+	st.write(""" Se hai tutti gli scnari pronti, carica il template compilato qui. """)
+	uploaded_file = st.file_uploader("Carica excel", type=".xlsx")
 
 	if st.button(':moneybag: Ready, compute ROI! :moneybag:',disabled=not uploaded_file, type='primary'):
-		st.subheader('Results for each scenario')
+		st.subheader('Risultati per ogni scenario')
 		[scenarios,CF,synth,minn,tots]=ROIcompute(uploaded_file) 
 		cii=0
-		fig=px.line(CF, x=CF.index, y=CF.columns, title='Cash Flow per year [€]')
+		fig=px.line(CF, x=CF.index, y=CF.columns, title='Cash Flow annuo [€]')
 		st.plotly_chart(fig)
 
 

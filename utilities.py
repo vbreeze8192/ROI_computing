@@ -30,7 +30,7 @@ def check_password():
         st.text_input(
             "Password", type="password", on_change=password_entered, key="password"
         )
-        st.error("Password incorrect")
+        st.error("Password errata")
         return False
     else:
         # Password correct.
@@ -220,8 +220,8 @@ def ROIcompute(name_file):
         main_mod=0
         tot_opt=0
         descr=gen['scenario_description'].loc[scenario]
-        st.write('Computing scenario :orange[{}]'.format(scenario))
-        st.write('Scenario features:')
+        st.subheader('Valutiamo lo scenario:orange[{}]'.format(scenario))
+        st.write('Parametri di scenario:')
         st.write(gen.loc[scenario])
         
         ce=gen['ce'].loc[scenario]
@@ -302,14 +302,14 @@ def ROIcompute(name_file):
         TOTYR_savings=TOTYR_savings+back_save
 
         #df.to_excel('{}.xlsx'.format(scenario)) ##capire come fare questo
-        st.write('Main results for each asset:')
+        st.write('Risultati per ogni asset:')
         download_excel(df,scenario)
 
         lic=licence (en_mod, main_mod,tot_opt, sw) + ams (en_mod, main_mod,tot_opt, sw) #licence and maintenance
         stp=setup (en_mod, main_mod,tot_opt, sw)/1000
         cf_t=(TOTYR_savings-lic)/1000 #saving per year without scaling
 
-        st.write('Total saving expected per year is :green[{} k€/yr]'.format(round(TOTYR_savings/1000,1)))
+        st.write('Risparmio totale atteso:green[{} k€/yr]'.format(round(TOTYR_savings/1000,1)))
 
         cash_flow=[-stp]
         if cash_flow[0]<minn:
@@ -326,22 +326,22 @@ def ROIcompute(name_file):
  
         txt='{} | PBT: {}, ROI: {}'.format(descr,round(PBT,1),round(ROI,1))
 
-        st.write('Setup cost  is :orange[{} k€]'.format(round(stp,1)))
-        st.write('Licence cost is :orange[{} k€/yr]'.format(round(licence (en_mod, main_mod,tot_opt, sw)/1000,1)))
-        st.write('Maintenance cost is :orange[{} k€/yr]'.format(round(ams(en_mod, main_mod,tot_opt, sw)/1000,1)))
-        st.write('Net cashflow for each year is :green[{} k€/yr]'.format(round(cf_t,1)))
-        st.write('Main economics for scenario :green[{}, {}]'.format(scenario,txt) )
-        st.write('Finished scenario {} - {}\n_____\n\n'.format(scenario,descr))
+        st.write('Costo di setup :orange[{} k€]'.format(round(stp,1)))
+        st.write('Costo di licenza :orange[{} k€/yr]'.format(round(licence (en_mod, main_mod,tot_opt, sw)/1000,1)))
+        st.write('Costo del mantenimento della soluzione :orange[{} k€/yr]'.format(round(ams(en_mod, main_mod,tot_opt, sw)/1000,1)))
+        st.write('Flusso di cassa netto annuo :green[{} k€/yr]'.format(round(cf_t,1)))
+        st.write('Indici economici principali per lo scenario analizzato :green[{}, {}]'.format(scenario,txt) )
+        st.write('Analisi complete per lo scenario {} - {}\n_____\n\n'.format(scenario,descr))
 
         synth.loc[scenario]=[round(stp,1),round(licence (en_mod, main_mod,tot_opt, sw)/1000,1),\
             round(ams(en_mod, main_mod,tot_opt, sw)/1000,1),round(cf_t,1),\
                 round(PBT,1),round(ROI,1)]
         CF[scenario]=cash_flow
     
-    st.subheader('Global results')
-    st.write('Cash flow')
+    st.title('Risultati generali')
+    st.subheader('Cash flow')
     download_excel(CF,'Cash_flow')
 
-    st.write('Main economics')
+    st.subheader('Indici economici')
     download_excel(synth,'Main_economics')
     return(scenarios,CF,synth,minn,tots)
