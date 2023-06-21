@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 #import matplotlib.pyplot as plt
 import plotly.express as px
+import os
 import datetime
 import math
 import streamlit as st
@@ -86,10 +87,25 @@ Tutti i risultati rappresentano ordini di grandezza per investimenti e risparmi 
 	'optmod':"Ottimizzazione del processo (1=Sì,0=No)",\
 	'perc_data':"Percentuale di dati disponibili dal processo (1=il processo è completamente rappresentato, 0=mancano tutti i dati)",\
 	'av_failure':"Sono disponibili sufficienti dati di errore o registro macchina (1=Sì, 0=No)"}
-	if st.checkbox(':paperclip: :red[Mostra le descrizioni per i campi del template:]'):
+	if st.checkbox(':paperclip: :red[Mostra le descrizioni per i campi del template e scarica un excel di esempio:]'):
 		for item in template_structure:
 			st.write('Foglio: :orange[{}]'.format(item))
 			st.write(template_structure[item])
+		nome_modello= os.path.join(os.getcwd(), os.path.normpath('File_Import_Python.xlsx'))
+		file_example=pd.read_excel(nome_modello)
+		buffer = io.BytesIO()
+		st.write(file_example)
+		with pd.ExcelWriter(buffer, engine='xlsxwriter') as writer:
+			# Write each dataframe to a different worksheet.
+			file_example.to_excel(writer, sheet_name='Sheet1', index=False)
+			# Close the Pandas Excel writer and output the Excel file to the buffer
+			writer.save()
+		st.download_button(
+		label="Download data as Excel",
+		data=buffer,
+		file_name='{}.xlsx'.format('Example_file'),
+		mime='application/vnd.ms-excel')
+
 	st.write(""" Se hai tutti gli scenari pronti, carica il template compilato qui. """)
 	uploaded_file = st.file_uploader("Carica excel", type=".xlsx")
 
