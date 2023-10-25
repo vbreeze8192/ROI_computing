@@ -286,7 +286,6 @@ def ROIcompute(name_file):
 
 
         df['CYR_EE']=df['E']*ce 
-        eprod=df['Eprod'] #per ora autoprod elettrica non si conta...
         #df['Thprod'] #autoprod termica non utilizzata...
         df['CYR_G']=df['G']*cg
         df['CYR_VE']=df['VE']*cve 
@@ -319,7 +318,7 @@ def ROIcompute(name_file):
             df['Sperc_EN'].loc[asset]=\
                 energy_savings(df['perc_data'].loc[asset],df['maintmod'].loc[asset], df['enmod'].loc[asset])
             [df['Sperc_OPT'].loc[asset],df['Earnings_OPT'].loc[asset]]=\
-                opt_savings(df['perc_data'].loc[asset], df['optmod'].loc[asset],eprod,ce)
+                opt_savings(df['perc_data'].loc[asset], df['optmod'].loc[asset],df['Eprod'].loc[asset],ce)
 
          
         back_save=bck_ee* backoffice(0.6, en_mod, len(df.index))+\
