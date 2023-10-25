@@ -54,12 +54,12 @@ def ams (en_mod, main_mod,tot_opt, sw):
         retem = 800 #circa un giorno per retraining
         retmm = 1600 # circa 2 giorni per retraing
         retopt=8000 # circa 15 giorni per reimpostare tutto l'ottimizzatore
-        fixed_cost=7000 #costo gestione: circa 10 giornate all'anno + hosting per il cloud cca 2000 €/anno
+        fixed_cost=12*700+2000 #costo gestione: circa 12 giornate all'anno + hosting per il cloud cca 2000 €/anno
     else:
         retem = 200 #retraining in 2 ore
         retmm = 400 #retraining in 4 ore
         retopt=1600 #impostazione scenario in 2 giorni
-        fixed_cost=1600 #costo di gestione: circa 2 giorni l'anno
+        fixed_cost=6*700 #costo di gestione: circa 6 giorni l'anno
 
     ams = fixed_cost + retem * en_mod + retmm * main_mod + \
         retopt*(tot_opt +2)
@@ -266,7 +266,12 @@ def ROIcompute(name_file):
         df['Sperc_EN']=df['perc_data'].copy()*0
         df['Sperc_OPT']=df['perc_data'].copy()*0
 
-
+        #aggiungo costo dell'hw per numero di modelli
+        hw_cost=0
+        if df['perc_data']<0.6:
+            hw_cost=(800*10*models)/1000 #k€
+            st.write('Sembra che tu non abbia sufficienti dati. Abbiamo aggiunto un investimento di :green[{} k€] per avere il 60% dei dati.'.format(hw_cost))
+            df['perc_data']=0.6
         for asset in assets:
             for what in ['Plan',1,2,3,'Pred']:
                 df['CYR_{}'.format(what)].loc[asset]=df['C_{}'.format(what)].loc[asset]*df['O_{}'.format(what)].loc[asset]
@@ -306,7 +311,7 @@ def ROIcompute(name_file):
         download_excel(df,scenario)
 
         lic=licence (en_mod, main_mod,tot_opt, sw) + ams (en_mod, main_mod,tot_opt, sw) #licence and maintenance
-        stp=setup (en_mod, main_mod,tot_opt, sw)/1000
+        stp=setup (en_mod, main_mod,tot_opt, sw)/1000+hw_cost
         cf_t=(TOTYR_savings-lic)/1000 #saving per year without scaling
 
         st.write('Risparmio totale atteso: :green[{} k€/yr]'.format(round(TOTYR_savings/1000,1)))
@@ -344,4 +349,4 @@ def ROIcompute(name_file):
 
     st.subheader('Indici economici')
     download_excel(synth,'Main_economics')
-    return(scenarios,CF,synth,minn,tots)
+    return(scenarios,CF,synth,minn,tots,hw_cost)

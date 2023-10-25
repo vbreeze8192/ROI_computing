@@ -112,7 +112,7 @@ Tutti i risultati rappresentano ordini di grandezza per investimenti e risparmi 
 
 	if st.button(':moneybag: Ready, compute ROI! :moneybag:',disabled=not uploaded_file, type='primary'):
 		st.subheader('Risultati per ogni scenario')
-		[scenarios,CF,synth,minn,tots]=ROIcompute(uploaded_file) 
+		[scenarios,CF,synth,minn,tots,hw_cost]=ROIcompute(uploaded_file) 
 		cii=0
 		fig=px.line(CF, x=CF.index, y=CF.columns, title='Cash Flow annuo [€]')
 		st.plotly_chart(fig)
