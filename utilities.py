@@ -201,7 +201,12 @@ def download_excel(dftoexc,name_exc='Download_Excel'):
     data=buffer,
     file_name='{}.xlsx'.format(name_exc),
     mime='application/vnd.ms-excel')
-
+    
+def managenan(item):
+    if np.isnan(item):
+        st.write(':information_source: Sembra che tu abbia {} vuoto. Abbiamo messo 0!'.format(item))
+        item=0
+    return(item)
 
 def ROIcompute(name_file):
 
@@ -239,11 +244,7 @@ def ROIcompute(name_file):
 
         assets=df.index    
         #for each row:
-        def managenan(item):
-            if item==np.nan:
-                st.write(':information_source: Sembra che tu abbia {} vuoto. Abbiamo messo 0!'.format(item))
-                item=0
-            return(item)
+
         for asset in assets:
             #each asset can have at most 1 energy model, 1 maint model and be optimized. 
             temp=df.loc[asset]
