@@ -268,10 +268,10 @@ def ROIcompute(name_file):
 
         #aggiungo costo dell'hw per numero di modelli
         hw_cost=0
-        if df['perc_data']<0.6:
+        if df['perc_data'].loc[asset]<0.6:
             hw_cost=(800*10*models)/1000 #k€
             st.write('Sembra che tu non abbia sufficienti dati. Abbiamo aggiunto un investimento di :green[{} k€] per avere il 60% dei dati.'.format(hw_cost))
-            df['perc_data']=0.6
+            df['perc_data'].loc[asset]=0.6
         for asset in assets:
             for what in ['Plan',1,2,3,'Pred']:
                 df['CYR_{}'.format(what)].loc[asset]=df['C_{}'.format(what)].loc[asset]*df['O_{}'.format(what)].loc[asset]
