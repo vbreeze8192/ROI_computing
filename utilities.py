@@ -202,9 +202,9 @@ def download_excel(dftoexc,name_exc='Download_Excel'):
     file_name='{}.xlsx'.format(name_exc),
     mime='application/vnd.ms-excel')
     
-def managenan(item):
+def managenan(item,name='un valore'):
     if np.isnan(item):
-        st.write(':information_source: Sembra che tu abbia {} vuoto. Abbiamo messo 0!'.format(item))
+        st.write(':triangular_flag_on_post:  Sembra che tu abbia {} vuoto. Abbiamo messo 0!'.format(name))
         item=0
     return(item)
 
@@ -248,11 +248,10 @@ def ROIcompute(name_file):
         for asset in assets:
             #each asset can have at most 1 energy model, 1 maint model and be optimized. 
             temp=df.loc[asset]
-            mm=int(managenan(temp['maintmod'])) #must be int
-            opt=int(managenan(temp['optmod'])) #must be int
-            em=int(managenan(temp['enmod'])) #must be int
-            mm=int(managenan(temp['maintmod'])) #must be int
-            opt=int(managenan(temp['optmod'])) #must be int
+            mm=int(managenan(temp['maintmod'],name='il numero di modelli di manutenzione predittiva')) #must be int
+            opt=int(managenan(temp['optmod'],name='il sistema di ottimizzazione')) #must be int
+            em=int(managenan(temp['enmod'],name='il numero di modelli di energy management')) #must be int
+
             
             #compute number of models for licence,setup costs and bckf saving
             models=models+em+mm+opt
@@ -278,7 +277,7 @@ def ROIcompute(name_file):
         hw_cost=0
         if df['perc_data'].loc[asset]<0.6:
             hw_cost=(800*10*models)/1000 #k€
-            st.write(':information_source: Sembra che tu non abbia sufficienti dati. Abbiamo aggiunto un investimento di :green[{} k€] per avere il 60% dei dati.'.format(hw_cost))
+            st.write(':triangular_flag_on_post:  Sembra che tu non abbia sufficienti dati. Abbiamo aggiunto un investimento di :green[{} k€] per avere il 60% dei dati.'.format(hw_cost))
             df['perc_data'].loc[asset]=0.6
         for asset in assets:
             for what in ['Plan',1,2,3,'Pred']:
