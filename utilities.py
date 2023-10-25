@@ -95,16 +95,18 @@ def setup (en_mod, main_mod,tot_opt, sw):
         if tot_opt>0:
             copt_fix=100000 # per definizione vincoli, scenari, funzione di costo etc
         else: copt_fix=0
-        copt=7000 #circa 15 giornate per i modelli di forecast
+        copt=16000 # modelli di forecast
         ind = 25000 
         alarms = 4500
         valid = 5000
     else:
-        cem = 3000 #circa 4 giornate
-        cmm = 6000 #circa 12 giornate
-        
-        copt=7000 #circa 6 giornate per i modelli di forecast
-        ind = 10000
+        cem = 7000 #circa 4 giornate
+        cmm = 10000 #circa 12 giornate
+        if tot_opt>0:
+            copt_fix=20000 # per definizione vincoli, scenari, funzione di costo etc
+        else: copt_fix=0        
+        copt=10000 #modelli di forecast
+        ind = 15000
         alarms = 2500
         valid = 5000
         if tot_opt>0:
