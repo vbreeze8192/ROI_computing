@@ -123,7 +123,7 @@ def backoffice(max_save, models, n_asset):
 
 def occurency_maintenance(what, av_failures, perc_data, mm, em):
     #computes perc savings on occurrency
-    if mm == 1:
+    if mm >= 1:
         if what == "Plan":
             max_save = 0.1
         elif what == 1:
@@ -150,7 +150,7 @@ def occurency_maintenance(what, av_failures, perc_data, mm, em):
                 max_save = 1
             else:
                 max_save = -1
-
+        else: max_save = 0
     else:
         max_save = 0
 
@@ -163,7 +163,7 @@ def occurency_maintenance(what, av_failures, perc_data, mm, em):
 
 def maint_savings(what, av_failures, perc_data, mm):
     #computes cost savings for maintenance
-    if mm == 1:
+    if mm >= 1:
         if what == "Plan":
             max_save = 0
         elif what == 1:
