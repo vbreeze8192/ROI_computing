@@ -200,7 +200,7 @@ def opt_savings(perc_data, opt,eprod,ce):
     #computes ptimization savings, up to 10perc
     
     if opt == 1:
-        SAVINGS_OPT = 0.10 * np.min((0,5+perc_data),1)
+        SAVINGS_OPT = 0.10 * np.min([(0,5+perc_data),1])
         earnings=round(eprod*ce/5)*5/1000 #k€ 
     else:
         SAVINGS_OPT = 0
