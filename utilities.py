@@ -230,7 +230,7 @@ def ROIcompute(name_file):
         bck_ee=gen['bck_ee'].loc[scenario]
         bck_man=gen['bck_man'].loc[scenario]
         bck_opt=gen['bck_opt'].loc[scenario]
-        cost_bck=gen['cost_FTE'].loc[scenario]
+        #cost_bck=gen['cost_FTE'].loc[scenario]
         tot_yr=gen['tot_yr'].loc[scenario]
         sw=gen['sw'].loc[scenario]
 
