@@ -304,7 +304,7 @@ def ROIcompute(name_file):
                 data_vectors=800*16*main_mod+500*6*en_mod
                 hw_cost=data_vectors*(1-df['perc_data'].loc[asset])/1000 #k€
                 hw_cost=round(hw_cost/5)*5 #k€ arrotondato
-                st.write(':triangular_flag_on_post:  Hai solo il {}% di dati, potrebbe non essere sufficiente. Abbiamo aggiunto un investimento di :green[{} k€] per avere il 70% dei dati.'.format(int(df['perc_data']*100),hw_cost))
+                st.write(':triangular_flag_on_post:  Hai solo il {}% di dati, potrebbe non essere sufficiente. Abbiamo aggiunto un investimento di :green[{} k€] per avere il 70% dei dati.'.format(int(df['perc_data'].loc[asset]*100),hw_cost))
                 df['perc_data_new'].loc[asset]=0.7
             for what in ['Plan',1,2,3,'Pred']:
                 df['CYR_{}'.format(what)].loc[asset]=df['C_{}'.format(what)].loc[asset]*df['O_{}'.format(what)].loc[asset]
