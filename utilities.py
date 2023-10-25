@@ -298,16 +298,17 @@ def ROIcompute(name_file):
         df['Sperc_OPT']=df['perc_data'].copy()*0
         df['Earnings_OPT']=df['perc_data'].copy()*0
         df['perc_data_new']=df['perc_data']
-
+        df['hw_cost']=df['perc_data'].copy()*0
         for asset in assets:
             st.write(":arrows_counterclockwise:  :blue[Elaboro l'asset {}...]".format(asset))
             hw_cost=0
             if df['perc_data'].loc[asset]<0.7:
-                data_vectors_cost=800*16*main_mod+500*6*en_mod #€
+                data_vectors_cost=800*15*main_mod+500*6*en_mod #€
                 hw_cost=data_vectors_cost*(1-df['perc_data'].loc[asset]/0.7)/1000 #k€
                 hw_cost=round(hw_cost/5)*5 #k€ arrotondato
                 st.write(':triangular_flag_on_post:  Hai solo il {}% di dati, potrebbe non essere sufficiente. Abbiamo aggiunto un investimento di :green[{} k€] per avere il 70% dei dati.'.format(int(df['perc_data'].loc[asset]*100),hw_cost))
                 df['perc_data_new'].loc[asset]=0.7
+                df['hw_cost'].loc[asset]=hw_cost
 
             for what in ['Plan',1,2,3,'Pred']:
                 df['CYR_{}'.format(what)].loc[asset]=df['C_{}'.format(what)].loc[asset]*df['O_{}'.format(what)].loc[asset]
@@ -347,7 +348,7 @@ def ROIcompute(name_file):
         download_excel(df,scenario)
 
         lic=licence (en_mod, main_mod,tot_opt, sw) + ams (en_mod, main_mod,tot_opt, sw) #licence and maintenance
-        stp=setup (en_mod, main_mod,tot_opt, sw)/1000+hw_cost
+        stp=setup (en_mod, main_mod,tot_opt, sw)/1000+df['hw_cost'].sum()
         cf_t=(TOTYR_savings-lic)/1000 #saving per year without scaling
 
         st.write('Risparmio totale atteso: :green[{} k€/yr]'.format(round(TOTYR_savings/1000,1)))
