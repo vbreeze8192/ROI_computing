@@ -196,13 +196,15 @@ def energy_savings(perc_data, mm, en):
         SAVINGS_EN = 0
     return(np.abs(SAVINGS_EN))
 
-def opt_savings(perc_data, opt):
-    #computes ptimization savings, up to 15perc
+def opt_savings(perc_data, opt,eprod,ce):
+    #computes ptimization savings, up to 10perc
     if opt == 1:
         SAVINGS_OPT = 0.10 * perc_data
+        earnings=eprod*ce
+        SAVINGS_OPT
     else:
         SAVINGS_OPT = 0
-    return(np.abs(SAVINGS_OPT))
+    return(np.abs(SAVINGS_OPT,earnings))
 
 def mipu_colors(N):
     all_colors=['#16679C','#00B398','#C9609F','#FF7F50','#219AE9','#BDD48D','#EE6F90','#FFBD69']
@@ -283,7 +285,7 @@ def ROIcompute(name_file):
 
 
         df['CYR_EE']=df['E']*ce 
-        #df['Eprod'] #per ora autoprod elettrica non si conta...
+        eprod=df['Eprod'] #per ora autoprod elettrica non si conta...
         #df['Thprod'] #autoprod termica non utilizzata...
         df['CYR_G']=df['G']*cg
         df['CYR_VE']=df['VE']*cve 
@@ -294,11 +296,11 @@ def ROIcompute(name_file):
             df['Sperc_MAN_{}'.format(what)]=df['C_{}'.format(what)].copy()*0
         df['Sperc_EN']=df['perc_data'].copy()*0
         df['Sperc_OPT']=df['perc_data'].copy()*0
-
-        #aggiungo costo dell'hw per numero di modelli, ipotizzando una media di 1200 € per item e 12 sensori per modello. 
+        df['Earnings_OPT']=df['perc_data'].copy()*0
         df['perc_data_new']=df['perc_data']
+
         for asset in assets:
-            st.write("Elaboro l'asset {}...".format(asset))
+            st.write(":arrows_counterclockwise:  :blue[Elaboro l'asset {}...]".format(asset))
             hw_cost=0
             if df['perc_data'].loc[asset]<0.7:
                 data_vectors_cost=800*16*main_mod+500*6*en_mod #€
@@ -306,6 +308,7 @@ def ROIcompute(name_file):
                 hw_cost=round(hw_cost/5)*5 #k€ arrotondato
                 st.write(':triangular_flag_on_post:  Hai solo il {}% di dati, potrebbe non essere sufficiente. Abbiamo aggiunto un investimento di :green[{} k€] per avere il 70% dei dati.'.format(int(df['perc_data'].loc[asset]*100),hw_cost))
                 df['perc_data_new'].loc[asset]=0.7
+
             for what in ['Plan',1,2,3,'Pred']:
                 df['CYR_{}'.format(what)].loc[asset]=df['C_{}'.format(what)].loc[asset]*df['O_{}'.format(what)].loc[asset]
                 df['Sperc_OCC_MAN_{}'.format(what)].loc[asset]=\
@@ -314,8 +317,8 @@ def ROIcompute(name_file):
                     maint_savings(what, df['av_failure'].loc[asset], df['perc_data'].loc[asset], df['maintmod'].loc[asset])
             df['Sperc_EN'].loc[asset]=\
                 energy_savings(df['perc_data'].loc[asset],df['maintmod'].loc[asset], df['enmod'].loc[asset])
-            df['Sperc_OPT'].loc[asset]=\
-                opt_savings(df['perc_data'].loc[asset], df['optmod'].loc[asset])
+            [df['Sperc_OPT'].loc[asset],df['Earnings_OPT'].loc[asset]]=\
+                opt_savings(df['perc_data'].loc[asset], df['optmod'].loc[asset],eprod,ce)
 
          
         back_save=bck_ee* backoffice(0.6, en_mod, len(df.index))+\
@@ -329,7 +332,7 @@ def ROIcompute(name_file):
         #compute savings after models
         #energy savings: how many euros imma save for optimization and monitoring
         for item in ['CYR_EE','CYR_G','CYR_VE']:
-            df['{}_YRsave'.format(item)]=df['{}'.format(item)]*(df['Sperc_EN']+df['Sperc_OPT'])
+            df['{}_YRsave'.format(item)]=df['{}'.format(item)]*(df['Sperc_EN']+df['Sperc_OPT'])+df['Earnings_OPT']
             TOTYR_savings=TOTYR_savings+df['{}_YRsave'.format(item)].sum()
 
         #maint savings: how many euros imma save 
