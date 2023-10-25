@@ -349,4 +349,4 @@ def ROIcompute(name_file):
 
     st.subheader('Indici economici')
     download_excel(synth,'Main_economics')
-    return(scenarios,CF,synth,minn,tots,hw_cost)
+    return(scenarios,CF,synth,minn,tots)
