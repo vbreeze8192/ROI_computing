@@ -36,16 +36,43 @@ def check_password():
         # Password correct.
         return True
         
-		
-def licence (en_mod, main_mod,tot_opt, sw):
+def licence_old (en_mod, main_mod,tot_opt, sw):
+    d = {'NIA': [ 17750, 19150, 27150, 35150, 39750], 'REBECCA': [8800,11900,16500,24500,29200]}
+    lic_listino = pd.DataFrame(data=d,index=[6,12,36,50,150])
+    totmod=en_mod+main_mod+tot_opt
     if sw==1:
         if tot_opt>0:
-            fixed_optima=20000 #Prezzo fisso optima ipotetico
+            fixed_optima=2000*12 #Prezzo fisso optima ipotetico
+
         else: fixed_optima=0
         lic_cost=18700 + 11134*math.log(en_mod+main_mod+tot_opt)-20167+fixed_optima #calcolato sulle licenze 2023 per Rebecca.
 
     else: lic_cost=0
     lic_cost = np.ceil(lic_cost)
+    return(lic_cost)
+
+		
+def licence (en_mod, main_mod,tot_opt, sw):
+    d = {'NIA': [ 17750, 19150, 27150, 35150, 39750], 'REBECCA': [8800,11900,16500,24500,29200]}
+    lic_listino = pd.DataFrame(data=d,index=[0,6,12,36,50]) #more than...
+    totmod=en_mod+main_mod+tot_opt
+
+    if totmod>150:
+        print('Too many!!')
+    myList=lic_listino.index
+    item=min(myList, key=lambda x:abs(x-totmod))
+
+    if sw==1:
+        if tot_opt>0:
+            col='NIA'
+        else:
+            col='REBECCA'
+
+        lic=lic_listino[col].loc[item]
+    else: lic=0
+    return(lic)
+
+
     return(lic_cost)
 
 
@@ -54,7 +81,7 @@ def ams (en_mod, main_mod,tot_opt, sw):
         retem = 800 #circa un giorno per retraining
         retmm = 1600 # circa 2 giorni per retraing
         retopt=8000 # circa 15 giorni per reimpostare tutto l'ottimizzatore
-        fixed_cost=12*700+2000 #costo gestione: circa 12 giornate all'anno + hosting per il cloud cca 2000 €/anno
+        fixed_cost=12*700+3000 #costo gestione: circa 12 giornate all'anno + hosting per il cloud cca 3000 €/anno
     else:
         retem = 200 #retraining in 2 ore
         retmm = 400 #retraining in 4 ore
@@ -71,22 +98,22 @@ def setup (en_mod, main_mod,tot_opt, sw):
         cem = 7000 #circa 15 giornate
         cmm = 10000 #circa 20 giornate
         if tot_opt>0:
-            copt_fix=50000 #circa 30 giornate per definizione vincoli, scenari, funzione di costo etc
+            copt_fix=100000 # per definizione vincoli, scenari, funzione di costo etc
         else: copt_fix=0
         copt=7000 #circa 15 giornate per i modelli di forecast
         ind = 25000 
         alarms = 4500
         valid = 5000
     else:
-        cem = 2000 #circa 4 giornate
+        cem = 3000 #circa 4 giornate
         cmm = 6000 #circa 12 giornate
         
-        copt=3000 #circa 6 giornate per i modelli di forecast
+        copt=7000 #circa 6 giornate per i modelli di forecast
         ind = 10000
         alarms = 2500
-        valid = 2000
+        valid = 5000
         if tot_opt>0:
-            copt_fix=20000 #circa 40 giornate per definizione vincoli, scenari, funzione di costo etc
+            copt_fix=50000 #per definizione vincoli, scenari, funzione di costo etc
         else: copt_fix=0
 
     SETUP_COST = en_mod * cem + main_mod * cmm + copt*(tot_opt+2)+ ind + alarms + valid
@@ -165,9 +192,9 @@ def maint_savings(what, av_failures, perc_data, mm):
 def energy_savings(perc_data, mm, en):
     #computes energy savings, up to 7 perc 
     if en == 1 and mm == 1:
-        SAVINGS_EN = 0.07 * perc_data
+        SAVINGS_EN = 0.05 * perc_data
     elif en == 1 and mm == 0:
-            SAVINGS_EN = 0.035 * perc_data
+            SAVINGS_EN = 0.025 * perc_data
     elif mm == 1 and en == 0:
         SAVINGS_EN = 0.01 * perc_data
     else:
@@ -177,7 +204,7 @@ def energy_savings(perc_data, mm, en):
 def opt_savings(perc_data, opt):
     #computes ptimization savings, up to 15perc
     if opt == 1:
-        SAVINGS_OPT = 0.15 * perc_data
+        SAVINGS_OPT = 0.10 * perc_data
     else:
         SAVINGS_OPT = 0
     return(np.abs(SAVINGS_OPT))
@@ -276,7 +303,7 @@ def ROIcompute(name_file):
         #aggiungo costo dell'hw per numero di modelli, ipotizzando una media di 1200 € per item e 12 sensori per modello. 
         hw_cost=0
         if df['perc_data'].loc[asset]<0.75:
-            hw_cost=(1200*12*models)/1000 #k€
+            hw_cost=round((1200*12*models)*(1-df['perc_data'].loc[asset])/1000;1) #k€
             st.write(':triangular_flag_on_post:  Sembra che tu non abbia sufficienti dati. Abbiamo aggiunto un investimento di :green[{} k€] per avere il 60% dei dati.'.format(hw_cost))
             df['perc_data'].loc[asset]=0.75
         for asset in assets:
