@@ -198,12 +198,13 @@ def energy_savings(perc_data, mm, en):
 
 def opt_savings(perc_data, opt,eprod,ce):
     #computes ptimization savings, up to 10perc
+    
     if opt == 1:
         SAVINGS_OPT = 0.10 * perc_data
         earnings=eprod*ce
-        SAVINGS_OPT
     else:
         SAVINGS_OPT = 0
+        earnings=0
     return(np.abs(SAVINGS_OPT,earnings))
 
 def mipu_colors(N):
