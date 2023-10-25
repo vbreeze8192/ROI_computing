@@ -296,7 +296,7 @@ def ROIcompute(name_file):
         df['Sperc_OPT']=df['perc_data'].copy()*0
 
         #aggiungo costo dell'hw per numero di modelli, ipotizzando una media di 1200 € per item e 12 sensori per modello. 
-
+        df['perc_data_new']=df['perc_data']
         for asset in assets:
             st.write("Elaboro l'asset {}...".format(asset))
             hw_cost=0
