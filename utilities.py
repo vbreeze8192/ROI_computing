@@ -296,12 +296,14 @@ def ROIcompute(name_file):
         df['Sperc_OPT']=df['perc_data'].copy()*0
 
         #aggiungo costo dell'hw per numero di modelli, ipotizzando una media di 1200 € per item e 12 sensori per modello. 
-        hw_cost=0
-        if df['perc_data'].loc[asset]<0.75:
-            hw_cost=round((1200*12*models)*(1-df['perc_data'].loc[asset])/1000,1) #k€
-            st.write(':triangular_flag_on_post:  Sembra che tu non abbia sufficienti dati. Abbiamo aggiunto un investimento di :green[{} k€] per avere il 60% dei dati.'.format(hw_cost))
-            df['perc_data'].loc[asset]=0.75
+
         for asset in assets:
+            st.write("Elaboro l'asset {}...".format(asset))
+            hw_cost=0
+            if df['perc_data'].loc[asset]<0.75:
+                hw_cost=round((1200*12*models)*(1-df['perc_data'].loc[asset])/1000,1) #k€
+                st.write(':triangular_flag_on_post:  Sembra che tu non abbia sufficienti dati. Abbiamo aggiunto un investimento di :green[{} k€] per avere il 75% dei dati.'.format(hw_cost))
+                df['perc_data'].loc[asset]=0.75
             for what in ['Plan',1,2,3,'Pred']:
                 df['CYR_{}'.format(what)].loc[asset]=df['C_{}'.format(what)].loc[asset]*df['O_{}'.format(what)].loc[asset]
                 df['Sperc_OCC_MAN_{}'.format(what)].loc[asset]=\
