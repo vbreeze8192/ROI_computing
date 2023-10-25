@@ -301,7 +301,9 @@ def ROIcompute(name_file):
             st.write("Elaboro l'asset {}...".format(asset))
             hw_cost=0
             if df['perc_data'].loc[asset]<0.75:
-                hw_cost=round((1200*12*models)*(1-df['perc_data'].loc[asset])/1000,1) #k€
+                data_vectors=800*16*main_mod+500*6*en_mod
+                hw_cost=data_vectors*(1-df['perc_data'].loc[asset])/1000 #k€
+                hw_cost=round(hw_cost/5)*5 #k€ arrotondato
                 st.write(':triangular_flag_on_post:  Sembra che tu non abbia sufficienti dati. Abbiamo aggiunto un investimento di :green[{} k€] per avere il 75% dei dati.'.format(hw_cost))
                 df['perc_data'].loc[asset]=0.75
             for what in ['Plan',1,2,3,'Pred']:
