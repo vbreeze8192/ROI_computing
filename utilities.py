@@ -200,7 +200,7 @@ def opt_savings(perc_data, opt,eprod,ce):
     #computes ptimization savings, up to 10perc
     
     if opt == 1:
-        SAVINGS_OPT = 0.10 * perc_data
+        SAVINGS_OPT = 0.10 * np.min((0,5+perc_data),1)
         earnings=round(eprod*ce/5)*5/1000 #k€ 
     else:
         SAVINGS_OPT = 0
@@ -302,7 +302,7 @@ def ROIcompute(name_file):
         for asset in assets:
             st.write(":arrows_counterclockwise:  :blue[Elaboro l'asset {}...]".format(asset))
             hw_cost=0
-            if df['perc_data'].loc[asset]<0.7:
+            if (df['perc_data'].loc[asset]<0.7) and (df['maintmod'].loc[asset]+df['enmod'].loc[asset]>0):
                 data_vectors_cost=800*15*main_mod+500*6*en_mod #€
                 hw_cost=data_vectors_cost*(1-df['perc_data'].loc[asset]/0.7)/1000 #k€
                 hw_cost=round(hw_cost/5)*5 #k€ arrotondato
@@ -333,8 +333,9 @@ def ROIcompute(name_file):
         #compute savings after models
         #energy savings: how many euros imma save for optimization and monitoring
         for item in ['CYR_EE','CYR_G','CYR_VE']:
-            df['{}_YRsave'.format(item)]=df['{}'.format(item)]*(df['Sperc_EN']+df['Sperc_OPT'])+df['Earnings_OPT']
+            df['{}_YRsave'.format(item)]=df['{}'.format(item)]*(df['Sperc_EN']+df['Sperc_OPT'])
             TOTYR_savings=TOTYR_savings+df['{}_YRsave'.format(item)].sum()
+        TOTYR_savings=TOTYR_savings+df['Earnings_OPT'].sum()
 
         #maint savings: how many euros imma save 
         for what in ['Plan',1,2,3,'Pred']:
