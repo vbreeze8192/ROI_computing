@@ -37,9 +37,7 @@ def check_password():
         return True
         
 def licence_old (en_mod, main_mod,tot_opt, sw):
-    d = {'NIA': [ 17750, 19150, 27150, 35150, 39750], 'REBECCA': [8800,11900,16500,24500,29200]}
-    lic_listino = pd.DataFrame(data=d,index=[6,12,36,50,150])
-    totmod=en_mod+main_mod+tot_opt
+
     if sw==1:
         if tot_opt>0:
             fixed_optima=2000*12 #Prezzo fisso optima ipotetico
@@ -52,13 +50,13 @@ def licence_old (en_mod, main_mod,tot_opt, sw):
     return(lic_cost)
 
 		
-def licence (en_mod, main_mod,tot_opt, sw):
+def licence(en_mod, main_mod,tot_opt, sw):
     d = {'NIA': [ 17750, 19150, 27150, 35150, 39750], 'REBECCA': [8800,11900,16500,24500,29200]}
     lic_listino = pd.DataFrame(data=d,index=[0,6,12,36,50]) #more than...
     totmod=en_mod+main_mod+tot_opt
 
     if totmod>150:
-        print('Too many!!')
+        st.write(':triangular_flag_on_post: Il dimensionamento della licenza è valido fino a 150 modelli. Potresti avere costi annuali più alti.')
     myList=lic_listino.index
     item=min(myList, key=lambda x:abs(x-totmod))
 
@@ -71,9 +69,6 @@ def licence (en_mod, main_mod,tot_opt, sw):
         lic=lic_listino[col].loc[item]
     else: lic=0
     return(lic)
-
-
-    return(lic_cost)
 
 
 def ams (en_mod, main_mod,tot_opt, sw):
