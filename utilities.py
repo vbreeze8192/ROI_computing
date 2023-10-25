@@ -302,7 +302,7 @@ def ROIcompute(name_file):
         df['Sperc_EN']=df['perc_data'].copy()*0
         df['Sperc_OPT']=df['perc_data'].copy()*0
         df['Earnings_OPT']=df['perc_data'].copy()*0
-        df['perc_data_new']=df['perc_data']
+        df['perc_data_old']=df['perc_data']
         df['hw_cost']=df['perc_data'].copy()*0
         for asset in assets:
             st.write(":arrows_counterclockwise:  :blue[Elaboro l'asset {}...]".format(asset))
@@ -312,7 +312,7 @@ def ROIcompute(name_file):
                 hw_cost=data_vectors_cost*(1-df['perc_data'].loc[asset]/0.7)/1000 #k€
                 hw_cost=round(hw_cost/5)*5 #k€ arrotondato
                 st.write(':triangular_flag_on_post:  Hai solo il {}% di dati, potrebbe non essere sufficiente. Abbiamo aggiunto un investimento di :green[{} k€] per avere il 70% dei dati.'.format(int(df['perc_data'].loc[asset]*100),hw_cost))
-                df['perc_data_new'].loc[asset]=0.7
+                df['perc_data'].loc[asset]=0.7
                 df['hw_cost'].loc[asset]=hw_cost
 
             for what in ['Plan',1,2,3,'Pred']:
