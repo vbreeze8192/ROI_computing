@@ -201,11 +201,11 @@ def opt_savings(perc_data, opt,eprod,ce):
     
     if opt == 1:
         SAVINGS_OPT = 0.10 * perc_data
-        earnings=eprod*ce
+        earnings=round(eprod*ce/5)*5/1000 #k€ 
     else:
         SAVINGS_OPT = 0
         earnings=0
-    return(np.abs(SAVINGS_OPT,earnings))
+    return(np.abs(SAVINGS_OPT),earnings)
 
 def mipu_colors(N):
     all_colors=['#16679C','#00B398','#C9609F','#FF7F50','#219AE9','#BDD48D','#EE6F90','#FFBD69']
